@@ -1,0 +1,115 @@
+/* App styles on top of the vendored Bootstrap 5.3; served from 'self' because the CSP allows no inline styles. */
+
+.app-navbar {
+  border-bottom: 3px solid var(--bs-info);
+}
+
+.app-navbar .search-form {
+  max-width: 34rem;
+}
+
+/* The search box has its own clear button; hide the browser's. */
+.app-navbar input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.skip-link:focus {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 1080;
+  padding: 0.5rem 1rem;
+  background: var(--bs-body-bg);
+  border-radius: var(--bs-border-radius);
+}
+
+/* Header band, after the NCSC "Keep up to date" page: a deep blue band with the title and the subtitle. */
+.header-band {
+  background: linear-gradient(120deg, #0b2545 0%, #13315c 55%, #1d4e89 100%);
+}
+
+.header-band .subtitle {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.toolbar .date-form input[type="date"] {
+  width: auto;
+  min-width: 9.5rem;
+}
+
+.day-heading {
+  scroll-margin-top: 1rem;
+}
+
+.day-heading:focus {
+  outline: none;
+}
+
+.day-heading:focus-visible {
+  outline: 3px solid var(--bs-primary);
+  outline-offset: 4px;
+  border-radius: var(--bs-border-radius-sm);
+}
+
+/* Cards: a subtle lift on hover or when the link inside has focus. */
+.news-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.news-card:hover,
+.news-card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: var(--bs-box-shadow) !important;
+}
+
+.news-card .card-title {
+  overflow-wrap: anywhere;
+}
+
+.news-link {
+  text-decoration: none;
+}
+
+.news-link:hover {
+  text-decoration: underline;
+}
+
+.source-badge {
+  font-weight: 500;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* At most four lines of excerpt. */
+.excerpt {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+/* A visible focus ring on every interactive element reached by keyboard. */
+a:focus-visible,
+.btn:focus-visible,
+.form-control:focus-visible {
+  outline: 3px solid var(--bs-primary);
+  outline-offset: 2px;
+}
+
+.app-navbar .btn:focus-visible,
+.app-navbar .form-control:focus-visible,
+.app-navbar a:focus-visible {
+  outline-color: var(--bs-info);
+}
+
+.error-card {
+  max-width: 36rem;
+}
+
+.app-footer {
+  border-top: 3px solid var(--bs-info);
+}

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cyber-news"
+version = "0.1.0"
+description = "Flask web app that displays cyber security news from an Elasticsearch index."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask~=3.1",
+    "elasticsearch~=9.5",
+    "gunicorn~=26.2",
+    "tzdata",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"cyber_news.web" = ["templates/*.html", "static/**/*"]

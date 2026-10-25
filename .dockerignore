@@ -1,0 +1,9 @@
+# Allow-list: the build context holds only what the wheel build needs, so .venv, .git, caches, IDE files,
+# .env, secrets/ and certs/ never reach the image.
+*
+!pyproject.toml
+!README.md
+!src/
+**/__pycache__
+**/*.py[cod]
+**/*.egg-info

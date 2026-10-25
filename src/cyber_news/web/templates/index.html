@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% from "_controls.html" import load_more %}
+{% block title %}{% if mode == "search" %}Search: {{ q }}{% else %}{{ result.day|day_label }}{% endif %}{% endblock %}
+{% block content %}
+<header class="header-band text-white">
+  <div class="container-xl py-4">
+    <h1 class="display-6 fw-semibold mb-1">Cyber security news</h1>
+    {%- if mode == "search" %}
+    <p class="lead mb-0 subtitle">Results for ‘<strong>{{ q }}</strong>’
+      <span class="badge rounded-pill text-bg-warning align-middle ms-1">searching all dates</span></p>
+    {%- else %}
+    <p class="lead mb-0 subtitle">News published on <strong>{{ result.day|day_label }}</strong></p>
+    {%- endif %}
+  </div>
+</header>
+
+<div class="toolbar border-bottom bg-body mb-4">
+  <div class="container-xl py-2 d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="d-flex flex-wrap align-items-center gap-2" role="group" aria-label="Choose a day">
+      {%- if mode == "day" %}
+      {%- if previous_day %}
+      <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('news.index', date=previous_day.isoformat()) }}"
+         aria-label="Previous day"><i class="bi bi-chevron-left" aria-hidden="true"></i><span class="d-none d-sm-inline ms-1">Previous day</span></a>
+      {%- endif %}
+      {%- endif %}
+      <form class="date-form d-flex align-items-center gap-2" action="{{ url_for('news.index') }}" method="get">
+        <label class="form-label small mb-0 text-body-secondary" for="date-input">Date</label>
+        <input class="form-control form-control-sm js-date-input" type="date" id="date-input" name="date"
+               value="{{ result.day.isoformat() if mode == 'day' else '' }}" min="1970-01-01" max="9998-12-31" required>
+        <button class="btn btn-outline-secondary btn-sm js-date-submit" type="submit">Show</button>
+      </form>
+      {%- if mode == "day" %}
+      {%- if next_day %}
+      <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('news.index', date=next_day.isoformat()) }}"
+         aria-label="Next day"><span class="d-none d-sm-inline me-1">Next day</span><i class="bi bi-chevron-right" aria-hidden="true"></i></a>
+      {%- else %}
+      <a class="btn btn-outline-secondary btn-sm disabled" role="link" aria-disabled="true" aria-label="Next day"><span
+         class="d-none d-sm-inline me-1">Next day</span><i class="bi bi-chevron-right" aria-hidden="true"></i></a>
+      {%- endif %}
+      {%- endif %}
+      <a class="btn btn-primary btn-sm" href="{{ url_for('news.index') }}"
+         {%- if mode == "day" and result.day == today %} aria-current="date"{% endif %}>Today</a>
+    </div>
+    {%- if mode == "search" and page.total %}
+    <p class="mb-0 small text-body-secondary result-counter" aria-live="polite">Showing
+      <strong class="js-shown">{{ cards|length }}</strong> of <strong class="js-total">{{ page.total }}</strong></p>
+    {%- endif %}
+  </div>
+</div>
+
+<div class="container-xl">
+  {%- if alert %}
+  <div class="alert alert-warning d-flex align-items-center gap-2 page-alert" role="alert">
+    <i class="bi bi-info-circle-fill" aria-hidden="true"></i><span>{{ alert }}</span>
+  </div>
+  {%- endif %}
+
+  {%- if mode == "search" %}
+  <section class="search-results" aria-label="Search results">
+    {%- if page.items %}
+    {% include "_news_items.html" %}
+    {%- if page.next_cursor %}
+    <div class="section-control mt-4">
+      {{ load_more(url_for('news.index', q=q, cursor=page.next_cursor), url_for('news.items', q=q, cursor=page.next_cursor)) }}
+    </div>
+    {%- endif %}
+    {%- else %}
+    <div class="empty-state text-center py-5 px-3 bg-body rounded-3 border">
+      <i class="bi bi-search display-4 text-body-tertiary" aria-hidden="true"></i>
+      <p class="lead mt-3">No results for ‘{{ q }}’</p>
+      <div class="d-inline-block text-start mb-4">
+        <p class="fw-semibold small mb-1">Search tips</p>
+        {% include "_search_tips.html" %}
+      </div>
+      <div><a class="btn btn-primary" href="{{ url_for('news.index') }}">Today's news</a></div>
+    </div>
+    {%- endif %}
+  </section>
+  {%- else %}
+  <div class="day-sections">
+    {% include "_day_section.html" %}
+  </div>
+  {%- endif %}
+</div>
+{% endblock %}

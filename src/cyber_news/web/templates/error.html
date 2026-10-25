@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container-xl py-5">
+  <div class="card shadow-sm mx-auto error-card">
+    <div class="card-body p-4 text-center">
+      <i class="bi {% if status == 503 %}bi-cloud-slash{% else %}bi-exclamation-octagon{% endif %} display-4 text-warning" aria-hidden="true"></i>
+      <h1 class="h4 mt-3">{{ title }} <span class="text-body-secondary">({{ status }})</span></h1>
+      <p class="mb-4">{{ message }}</p>
+      <div class="d-flex flex-wrap justify-content-center gap-2">
+        {%- if reload_url %}
+        <a class="btn btn-primary" href="{{ reload_url }}"><i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>Reload</a>
+        {%- elif status == 503 %}
+        <a class="btn btn-primary" href="{{ request.full_path if request.query_string else request.path }}"><i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>Try again</a>
+        {%- endif %}
+        <a class="btn btn-outline-secondary" href="{{ url_for('news.index') }}">Today's news</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

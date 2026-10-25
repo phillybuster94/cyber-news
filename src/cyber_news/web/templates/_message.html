@@ -1,0 +1,14 @@
+{#- A fragment for news.js: "No older news" (kind="no-older") or an error alert (kind="error").
+    Context: message, kind, reload_url (optional: a link back to the page the user started from). -#}
+{%- if kind == "no-older" %}
+<p class="text-body-secondary text-center mb-0 no-older">{{ message }}</p>
+{%- else %}
+<div class="alert alert-warning d-flex flex-wrap align-items-center gap-2 mb-3 fragment-error" role="alert">
+  <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+  {%- if reload_url %}
+  <a class="alert-link js-reload" href="{{ reload_url }}">{{ message }}</a>
+  {%- else %}
+  <span>{{ message }}</span>
+  {%- endif %}
+</div>
+{%- endif %}

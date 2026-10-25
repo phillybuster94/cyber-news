@@ -1,0 +1,10 @@
+.idea
+.venv/
+__pycache__/
+.env
+*.egg-info/
+# Local connection material for the remote cluster: never commit it.
+secrets/
+certs/
+docker-compose.override.yml
+build/

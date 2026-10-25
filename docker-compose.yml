@@ -1,0 +1,19 @@
+# The web app against a remote Elasticsearch; the cluster is not part of this stack.
+#   make up       build the image, start the app, wait until it is healthy
+#   make check    /healthz and /readyz (ready = Elasticsearch answers)
+# The connection settings come from .env (required, see .env.example). Secrets and the CA certificate are
+# mounted by docker-compose.override.yml (git-ignored, merged automatically; see the README).
+# The host port is bound to 127.0.0.1 only.
+name: cyber-news-remote
+
+services:
+  app:
+    build: .
+    image: cyber-news:latest
+    env_file:
+      - path: .env
+        required: true
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
+    # Health: the image's HEALTH CHECK on /healthz.

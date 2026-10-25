@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Cyber security news{% endblock %} · Cyber News</title>
+  <link rel="stylesheet" href="{{ url_for('news.static', filename='vendor/bootstrap-5.3.8/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('news.static', filename='vendor/bootstrap-icons-1.13.2/bootstrap-icons.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('news.static', filename='css/app.css') }}">
+  <script src="{{ url_for('news.static', filename='vendor/bootstrap-5.3.8/js/bootstrap.bundle.min.js') }}" defer></script>
+  <script src="{{ url_for('news.static', filename='js/news.js') }}" defer></script>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-body-tertiary">
+  <a class="visually-hidden-focusable skip-link" href="#main">Skip to news</a>
+  <nav class="navbar navbar-dark bg-dark app-navbar" aria-label="Main">
+    <div class="container-xl flex-nowrap gap-2">
+      <a class="navbar-brand d-flex align-items-center gap-2 me-0 me-sm-3" href="{{ url_for('news.index') }}" aria-label="Cyber News">
+        <i class="bi bi-shield-lock-fill text-info" aria-hidden="true"></i>
+        <span class="d-none d-sm-inline">Cyber News</span>
+      </a>
+      <form class="search-form flex-grow-1" role="search" action="{{ url_for('news.index') }}" method="get">
+        <label class="visually-hidden" for="search-input">Search news</label>
+        <div class="input-group input-group-sm">
+          <input class="form-control" type="search" id="search-input" name="q" value="{{ q }}"
+                 placeholder="Search all news" maxlength="200" autocomplete="off">
+          <button class="btn btn-outline-light js-clear-search{% if not q %} d-none{% endif %}" type="button"
+                  aria-label="Clear search"><i class="bi bi-x-lg" aria-hidden="true"></i></button>
+          <button class="btn btn-outline-light js-search-tips" type="button" aria-label="Search tips"
+                  data-bs-toggle="popover" data-bs-placement="bottom" data-bs-title="Search tips">
+            <i class="bi bi-question-circle" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-info" type="submit" aria-label="Search">
+            <i class="bi bi-search" aria-hidden="true"></i><span class="d-none d-md-inline ms-1">Search</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </nav>
+  <template id="search-tips-content">{% include "_search_tips.html" %}</template>
+
+  <main id="main" class="flex-grow-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <div class="visually-hidden" id="live-region" aria-live="polite" aria-atomic="true"></div>
+
+  <footer class="app-footer bg-dark text-body-secondary mt-5 py-4" data-bs-theme="dark">
+    <div class="container-xl d-flex flex-column flex-sm-row justify-content-between gap-2 small">
+      <span><i class="bi bi-rss" aria-hidden="true"></i> News collected from public RSS feeds; links open the source site.</span>
+      <span>Times in {{ timezone_name }}</span>
+    </div>
+  </footer>
+</body>
+</html>

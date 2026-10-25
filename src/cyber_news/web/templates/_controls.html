@@ -1,0 +1,20 @@
+{#- The bottom controls of a section. Each is a real link (it works without JS) that news.js enhances to fetch
+    the fragment at data-fragment-url. -#}
+{% macro load_more(href, fragment_url) -%}
+<a class="btn btn-outline-primary w-100 js-load-more" href="{{ href }}" data-fragment-url="{{ fragment_url }}">
+  <span class="spinner-border spinner-border-sm me-2 d-none js-spinner" aria-hidden="true"></span>
+  <span class="js-label">Load more</span>
+</a>
+{%- endmacro %}
+
+{% macro show_older(day, extra_class="w-100") -%}
+<a class="btn btn-outline-secondary {{ extra_class }} js-show-older" href="{{ url_for('news.index', before=day.isoformat()) }}"
+   data-fragment-url="{{ url_for('news.older', before=day.isoformat()) }}">
+  <span class="spinner-border spinner-border-sm me-2 d-none js-spinner" aria-hidden="true"></span>
+  <span class="js-label">Show older <i class="bi bi-arrow-down" aria-hidden="true"></i></span>
+</a>
+{%- endmacro %}
+
+{% macro no_older_news() -%}
+<p class="text-body-secondary text-center mb-0 no-older">No older news</p>
+{%- endmacro %}

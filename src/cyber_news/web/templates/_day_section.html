@@ -1,0 +1,39 @@
+{#- One day of news: the selected day on the page, and every day appended by Show older (/news/older).
+    Context: result (DayResult), cards, no_older (True when nothing older exists, known from ?before=). -#}
+{% from "_controls.html" import load_more, show_older, no_older_news %}
+{%- set day = result.day %}
+{%- set page = result.page %}
+<section class="day-section mb-5" data-day="{{ day.isoformat() }}" aria-labelledby="day-{{ day.isoformat() }}">
+  <h2 class="h5 day-heading d-flex align-items-baseline gap-2 pb-2 mb-3 border-bottom" id="day-{{ day.isoformat() }}"
+      tabindex="-1" data-day-label="{{ day|day_label }}">
+    <i class="bi bi-calendar3 text-primary" aria-hidden="true"></i>
+    <span>{{ day|day_label }} · <span class="js-total">{{ page.total }}</span> news</span>
+  </h2>
+  {%- if page.items %}
+  {% include "_news_items.html" %}
+  <div class="section-control mt-4">
+    {%- if page.next_cursor %}
+    {{ load_more(url_for('news.index', date=day.isoformat(), cursor=page.next_cursor),
+                 url_for('news.items', date=day.isoformat(), cursor=page.next_cursor)) }}
+    <template class="js-show-older-template">{{ show_older(day) }}</template>
+    {%- elif no_older %}
+    {{ no_older_news() }}
+    {%- else %}
+    {{ show_older(day) }}
+    {%- endif %}
+  </div>
+  {%- else %}
+  <div class="empty-state text-center py-5 px-3 bg-body rounded-3 border">
+    <i class="bi bi-calendar-x display-4 text-body-tertiary" aria-hidden="true"></i>
+    <p class="lead mt-3 mb-4">No news published on {{ day|day_label }}</p>
+    <div class="d-flex flex-wrap justify-content-center gap-2 section-control">
+      {%- if no_older %}
+      {{ no_older_news() }}
+      {%- else %}
+      {{ show_older(day, "") }}
+      {%- endif %}
+      <a class="btn btn-primary" href="{{ url_for('news.index') }}"><i class="bi bi-calendar-check me-1" aria-hidden="true"></i>Today</a>
+    </div>
+  </div>
+  {%- endif %}
+</section>
